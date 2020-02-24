@@ -7,9 +7,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
-    public static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
             Intent k = new Intent(this, WorkFlowActivity.class);
             startActivity(k);
         } catch(Exception e) {
-            Log.e(TAG, e.getMessage());
+            Log.e(TAG, Objects.requireNonNull(e.getMessage()));
         }
     }
 }

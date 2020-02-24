@@ -4,21 +4,31 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.Button;
 
 import online.fixu.bsp.alf.alfnotifworker.worker.WorkflowViewModel;
 
 public class WorkFlowActivity extends AppCompatActivity {
 
+    private static final String TAG = "WorkFlowActivity";
+
     private WorkflowViewModel mViewModel;
 
-    public static final String TAG = "WorkFlowActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.d(TAG, "onCreate()");
         setContentView(R.layout.activity_work_flow);
 
         // Get the ViewModel
         mViewModel = new ViewModelProvider(this).get(WorkflowViewModel.class);
+
+        Button mGoButton = findViewById(R.id.go_button);
+
+        // Setup blur image file button
+        mGoButton.setOnClickListener(view -> mViewModel.startAlfrescoTaskChecker());
     }
 }
