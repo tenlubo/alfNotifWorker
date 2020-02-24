@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name='AlfNotifWorker2'
+rootProject.name='AlfNotifWorker'
