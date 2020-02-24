@@ -1,0 +1,2 @@
+# alfNotifWorker
+Alfresco Notification Worker
