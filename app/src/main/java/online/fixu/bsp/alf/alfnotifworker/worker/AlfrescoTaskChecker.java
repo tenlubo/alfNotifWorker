@@ -20,6 +20,8 @@ public class AlfrescoTaskChecker extends Worker {
     public Result doWork() {
 
         Log.d(TAG, "doWork()");
+        Context applicationContext = getApplicationContext();
+        WorkerUtils.makeStatusNotification("Blurring image", applicationContext);
 
         return Result.success();
     }
