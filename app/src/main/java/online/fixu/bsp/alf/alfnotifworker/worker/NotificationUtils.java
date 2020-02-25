@@ -21,6 +21,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.util.Log;
 
@@ -76,22 +77,38 @@ final class NotificationUtils {
             }
         }
 
-        // Create the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
                 NotificationConstants.CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_launcher_foreground)
+                .setStyle(getBigTextStyle(message))
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setLargeIcon(BitmapFactory.decodeResource(
+                        context.getResources(),
+                        R.drawable.ic_alarm_white_48dp))
                 .setContentTitle(NotificationConstants.NOTIFICATION_TITLE)
                 .setContentText(message)
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(getNotificationPendingIntent(context))
                 .addAction(getSnoozeAction(context))
-//                .addAction(dismissAction)
-                .setVibrate(new long[0]);
+                .addAction(getDismissAction(context));
 
         // Show the notification
         NotificationManagerCompat.from(context).notify(NotificationConstants.NOTIFICATION_ID, builder.build());
     }
 
+
+    private static NotificationCompat.BigTextStyle getBigTextStyle(String message) {
+        // Create the notification
+         return new NotificationCompat.BigTextStyle()
+                // Overrides ContentText in the big form of the template.
+                .bigText(message)
+                // Overrides ContentTitle in the big form of the template.
+                .setBigContentTitle(NotificationConstants.NOTIFICATION_TITLE)
+                // Summary line after the detail section in the big form of the template.
+                // Note: To improve readability, don't overload the user with info. If Summary Text
+                // doesn't add critical information, you should skip it.
+                .setSummaryText("Asi vela bike fixu");
+    }
 
     private static PendingIntent getNotificationPendingIntent(Context context) {
 
@@ -103,6 +120,19 @@ final class NotificationUtils {
                 notifyIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
+    }
+
+    private static NotificationCompat.Action getDismissAction(Context context){
+        // Dismiss Action.
+        Intent dismissIntent = new Intent(context, WorkFlowActivity.class);
+        dismissIntent.setAction(WorkFlowActivity.ACTION_DISMISS);
+
+        PendingIntent dismissPendingIntent = PendingIntent.getService(context, 0, dismissIntent, 0);
+        return new NotificationCompat.Action.Builder(
+                        R.drawable.ic_cancel_white_48dp,
+                        "Dismiss",
+                        dismissPendingIntent)
+                        .build();
     }
 
     private static NotificationCompat.Action getSnoozeAction(Context context){

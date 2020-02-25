@@ -16,6 +16,9 @@ public class WorkFlowActivity extends AppCompatActivity {
     public static final String ACTION_SNOOZE =
             "online.fixu.bsp.alf.alfnotifworker.action.SNOOZE";
 
+    public static final String ACTION_DISMISS =
+            "online.fixu.bsp.alf.alfnotifworker.action.DISMISS";
+
     private WorkflowViewModel mViewModel;
 
 
