@@ -16,6 +16,7 @@
 
 package online.fixu.bsp.alf.alfnotifworker.worker;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -86,8 +87,10 @@ final class NotificationUtils {
                         R.drawable.ic_alarm_white_48dp))
                 .setContentTitle(NotificationConstants.NOTIFICATION_TITLE)
                 .setContentText(message)
+                .setCategory(Notification.CATEGORY_ALARM)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                 .setContentIntent(getNotificationPendingIntent(context))
                 .addAction(getSnoozeAction(context))
                 .addAction(getDismissAction(context));
@@ -124,8 +127,8 @@ final class NotificationUtils {
 
     private static NotificationCompat.Action getDismissAction(Context context){
         // Dismiss Action.
-        Intent dismissIntent = new Intent(context, WorkFlowActivity.class);
-        dismissIntent.setAction(WorkFlowActivity.ACTION_DISMISS);
+        Intent dismissIntent = new Intent(context, NotificationService.class);
+        dismissIntent.setAction(NotificationService.ACTION_DISMISS);
 
         PendingIntent dismissPendingIntent = PendingIntent.getService(context, 0, dismissIntent, 0);
         return new NotificationCompat.Action.Builder(
@@ -137,8 +140,8 @@ final class NotificationUtils {
 
     private static NotificationCompat.Action getSnoozeAction(Context context){
 
-        Intent snoozeIntent = new Intent(context, WorkFlowActivity.class);
-        snoozeIntent.setAction(WorkFlowActivity.ACTION_SNOOZE);
+        Intent snoozeIntent = new Intent(context, NotificationService.class);
+        snoozeIntent.setAction(NotificationService.ACTION_SNOOZE);
 
         PendingIntent snoozePendingIntent = PendingIntent.getService(context, 0, snoozeIntent, 0);
         return new NotificationCompat.Action.Builder(

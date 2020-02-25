@@ -1,6 +1,6 @@
 package online.fixu.bsp.alf.alfnotifworker.worker;
 
-interface NotificationConstants {
+public interface NotificationConstants {
 
     // Name of Notification Channel for verbose notifications of background work
     CharSequence VERBOSE_NOTIFICATION_CHANNEL_NAME =

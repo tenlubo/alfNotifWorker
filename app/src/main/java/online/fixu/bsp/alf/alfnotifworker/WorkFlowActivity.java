@@ -1,5 +1,7 @@
 package online.fixu.bsp.alf.alfnotifworker;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
@@ -7,17 +9,12 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import online.fixu.bsp.alf.alfnotifworker.worker.NotificationConstants;
 import online.fixu.bsp.alf.alfnotifworker.worker.WorkflowViewModel;
 
 public class WorkFlowActivity extends AppCompatActivity {
 
-    private static final String TAG = "WorkFlowActivity";
-
-    public static final String ACTION_SNOOZE =
-            "online.fixu.bsp.alf.alfnotifworker.action.SNOOZE";
-
-    public static final String ACTION_DISMISS =
-            "online.fixu.bsp.alf.alfnotifworker.action.DISMISS";
+    private static final String TAG = WorkFlowActivity.class.getSimpleName();
 
     private WorkflowViewModel mViewModel;
 
@@ -28,6 +25,11 @@ public class WorkFlowActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate()");
         setContentView(R.layout.activity_work_flow);
+
+        // Cancel Notification
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.cancel(NotificationConstants.NOTIFICATION_ID);
 
         // Get the ViewModel
         mViewModel = new ViewModelProvider(this).get(WorkflowViewModel.class);
