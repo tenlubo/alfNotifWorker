@@ -23,9 +23,10 @@ public class WorkflowViewModel extends AndroidViewModel {
     public void startAlfrescoTaskChecker() {
 
         PeriodicWorkRequest.Builder myWorkBuilder =
-                new PeriodicWorkRequest.Builder(AlfrescoTaskChecker.class, 10, TimeUnit.SECONDS);
+                new PeriodicWorkRequest.Builder(AlfrescoTaskChecker.class, 900, TimeUnit.SECONDS);
 
         PeriodicWorkRequest myWork = myWorkBuilder.build();
-        mWorkManager.enqueueUniquePeriodicWork("alfTaskTag", ExistingPeriodicWorkPolicy.KEEP, myWork);
+        mWorkManager.enqueueUniquePeriodicWork("alfTaskTag",
+                ExistingPeriodicWorkPolicy.REPLACE, myWork);
     }
 }

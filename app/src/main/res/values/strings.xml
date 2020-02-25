@@ -8,5 +8,5 @@
     <string name="workflow_reject">Reject</string>
     <string name="next_workflow">Next Workflow</string>
     <string name="go">Submit</string>
-    <string name="reload">Reload</string>
+    <string name="reload">Refresh</string>
 </resources>

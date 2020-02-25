@@ -18,18 +18,20 @@ package online.fixu.bsp.alf.alfnotifworker.worker;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import online.fixu.bsp.alf.alfnotifworker.R;
+import online.fixu.bsp.alf.alfnotifworker.WorkFlowActivity;
 
 
-final class WorkerUtils {
-    private static final String TAG = WorkerUtils.class.getSimpleName();
+final class NotificationUtils {
+    private static final String TAG = NotificationUtils.class.getSimpleName();
 
     /**
      * Create a Notification that is shown as a heads-up notification if possible.
@@ -46,11 +48,11 @@ final class WorkerUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library
-            CharSequence name = Constants.VERBOSE_NOTIFICATION_CHANNEL_NAME;
-            String description = Constants.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION;
+            CharSequence name = NotificationConstants.VERBOSE_NOTIFICATION_CHANNEL_NAME;
+            String description = NotificationConstants.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION;
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel =
-                    new NotificationChannel(Constants.CHANNEL_ID, name, importance);
+                    new NotificationChannel(NotificationConstants.CHANNEL_ID, name, importance);
             channel.setDescription(description);
 
             // Add the channel
@@ -64,30 +66,46 @@ final class WorkerUtils {
 
         // Create the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context,
-                Constants.CHANNEL_ID)
+                NotificationConstants.CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(Constants.NOTIFICATION_TITLE)
+                .setContentTitle(NotificationConstants.NOTIFICATION_TITLE)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(getNotificationPendingIntent(context))
+//                .addAction(snoozeAction)
+//                .addAction(dismissAction)
                 .setVibrate(new long[0]);
 
         // Show the notification
-        NotificationManagerCompat.from(context).notify(Constants.NOTIFICATION_ID, builder.build());
+        NotificationManagerCompat.from(context).notify(NotificationConstants.NOTIFICATION_ID, builder.build());
+    }
+
+
+    private static PendingIntent getNotificationPendingIntent(Context context) {
+
+        Intent notifyIntent = new Intent(context, WorkFlowActivity.class);
+        notifyIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        return PendingIntent.getActivity(
+                context,
+                0,
+                notifyIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
     }
 
     /**
      * Method for sleeping for a fixed about of time to emulate slower work
      */
-    static void sleep() {
-        try {
-            Thread.sleep(Constants.DELAY_TIME_MILLIS, 0);
-        } catch (InterruptedException e) {
-            Log.d(TAG, e.getMessage());
-        }
-    }
+//    static void sleep() {
+//        try {
+//            Thread.sleep(Constants.DELAY_TIME_MILLIS, 0);
+//        } catch (InterruptedException e) {
+//            Log.d(TAG, e.getMessage());
+//        }
+//    }
 
 
 
-    private WorkerUtils() {
+    private NotificationUtils() {
     }
 }
