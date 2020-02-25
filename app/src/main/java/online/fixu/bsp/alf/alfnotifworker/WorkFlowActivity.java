@@ -1,11 +1,11 @@
 package online.fixu.bsp.alf.alfnotifworker;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import online.fixu.bsp.alf.alfnotifworker.worker.WorkflowViewModel;
 
@@ -27,8 +27,12 @@ public class WorkFlowActivity extends AppCompatActivity {
         mViewModel = new ViewModelProvider(this).get(WorkflowViewModel.class);
 
         Button mGoButton = findViewById(R.id.go_button);
-
         // Setup blur image file button
         mGoButton.setOnClickListener(view -> mViewModel.startAlfrescoTaskChecker());
+
+        Button mReloadButton = findViewById(R.id.refresh_button);
+        // Setup blur image file button
+        mReloadButton.setOnClickListener(view -> mViewModel.oneTimeAlfrescoTaskCheck());
+
     }
 }
