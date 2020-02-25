@@ -22,6 +22,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -31,6 +32,7 @@ import online.fixu.bsp.alf.alfnotifworker.WorkFlowActivity;
 
 
 final class NotificationUtils {
+
     private static final String TAG = NotificationUtils.class.getSimpleName();
 
     /**
@@ -43,6 +45,8 @@ final class NotificationUtils {
      * @param context Context needed to create Toast
      */
     static void makeStatusNotification(String message, Context context) {
+
+        Log.d(TAG,"makeStatusNotification()");
 
         // Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -72,7 +76,7 @@ final class NotificationUtils {
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(getNotificationPendingIntent(context))
-//                .addAction(snoozeAction)
+                .addAction(getSnoozeAction(context))
 //                .addAction(dismissAction)
                 .setVibrate(new long[0]);
 
@@ -91,6 +95,19 @@ final class NotificationUtils {
                 notifyIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
+    }
+
+    private static NotificationCompat.Action getSnoozeAction(Context context){
+
+        Intent snoozeIntent = new Intent(context, WorkFlowActivity.class);
+        snoozeIntent.setAction(WorkFlowActivity.ACTION_SNOOZE);
+
+        PendingIntent snoozePendingIntent = PendingIntent.getService(context, 0, snoozeIntent, 0);
+        return new NotificationCompat.Action.Builder(
+                        R.drawable.ic_alarm_white_48dp,
+                        "Snooze",
+                        snoozePendingIntent)
+                        .build();
     }
 
     /**

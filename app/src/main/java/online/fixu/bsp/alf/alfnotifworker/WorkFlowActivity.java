@@ -13,6 +13,9 @@ public class WorkFlowActivity extends AppCompatActivity {
 
     private static final String TAG = "WorkFlowActivity";
 
+    public static final String ACTION_SNOOZE =
+            "online.fixu.bsp.alf.alfnotifworker.action.SNOOZE";
+
     private WorkflowViewModel mViewModel;
 
 
