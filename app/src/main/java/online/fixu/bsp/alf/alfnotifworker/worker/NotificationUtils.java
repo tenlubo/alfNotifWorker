@@ -63,6 +63,14 @@ final class NotificationUtils {
             NotificationManager notificationManager =
                     (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
+            boolean areNotificationsEnabled = notificationManager.areNotificationsEnabled();
+            if (!areNotificationsEnabled) {
+                // Because the user took an action to create a notification, we create a prompt to let
+                // the user re-enable notifications for this application again.
+                openNotificationSettingsForApp(context);
+                return;
+            }
+
             if (notificationManager != null) {
                 notificationManager.createNotificationChannel(channel);
             }
@@ -124,5 +132,23 @@ final class NotificationUtils {
 
 
     private NotificationUtils() {
+    }
+
+    /**
+     * Helper method for the SnackBar action, i.e., if the user has this application's notifications
+     * disabled, this opens up the dialog to turn them back on after the user requests a
+     * Notification launch.
+     *
+     * IMPORTANT NOTE: You should not do this action unless the user takes an action to see your
+     * Notifications like this sample demonstrates. Spamming users to re-enable your notifications
+     * is a bad idea.
+     */
+    private static void openNotificationSettingsForApp(Context context) {
+        // Links to this app's notification settings.
+        Intent intent = new Intent();
+        intent.setAction("android.settings.APP_NOTIFICATION_SETTINGS");
+        intent.putExtra("app_package", context.getPackageName());
+        intent.putExtra("app_uid", context.getApplicationInfo().uid);
+        context.startActivity(intent);
     }
 }

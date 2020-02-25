@@ -13,7 +13,7 @@ interface NotificationConstants {
 
     String NOTIFICATION_NEW_TASK_MESSAGE = "New Bike Fixu Task";
 
-    int NOTIFICATION_ID = 1;
+    int NOTIFICATION_ID = 777;
     long DELAY_TIME_MILLIS = 5000;
 
 
