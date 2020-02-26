@@ -81,8 +81,8 @@ public class AlfrescoTaskChecker extends Worker {
 
                 for (Process process : processes) {
                     Log.d(TAG, "process identifier: " + process.getIdentifier());
-                    bikeFixuTaskList += ":proc-id:" + process.getIdentifier();
-                    bikeFixuTaskList += ":proc-desc:" + process.getDescription();
+                    bikeFixuTaskList += "\n\n:proc-id:" + process.getIdentifier();
+                    bikeFixuTaskList += "\n\n:proc-desc:" + process.getDescription();
                 }
 
                 // find task(s) to complete
@@ -91,9 +91,13 @@ public class AlfrescoTaskChecker extends Worker {
                 // for each task
                 for (Task task : tasks) {
                     // set up comment and/or other variables as required
-                    bikeFixuTaskList += ":task-id:" + task.getIdentifier();
-                    bikeFixuTaskList += ":task-desc:" + task.getDescription();
-                    bikeFixuTaskList += ":task-desc:" + task.getAssigneeIdentifier();
+                    bikeFixuTaskList += "\n\n:task-id:" + task.getIdentifier();
+                    bikeFixuTaskList += "\n\n:task-desc:" + task.getDescription();
+                    bikeFixuTaskList += "\n\n:task-assign:" + task.getAssigneeIdentifier();
+                    bikeFixuTaskList += "\n\n:task-key:" + task.getKey();
+                    bikeFixuTaskList += "\n\n:task-name:" + task.getName();
+                    bikeFixuTaskList += "\n\n:task-proc-id:" + task.getProcessIdentifier();
+                    bikeFixuTaskList += "\n\n:task-proc-def-id:" + task.getProcessDefinitionIdentifier();
                     Log.d(TAG, bikeFixuTaskList);
                 }
 
