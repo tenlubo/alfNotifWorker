@@ -13,4 +13,7 @@ public interface NotificationConstants {
 
     int NOTIFICATION_ID = 777;
 
+    String TAG_ALFRESCO_OUTPUT = "BIKE_FIXU_ALFRESCO_OUTPUT";
+
+    String BIKE_FIXU_TASK_NAME_KEY = "BIKE_FIXU_TASK_NAME_KEY";
 }

@@ -4,12 +4,16 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
 public class AlfrescoTaskChecker extends Worker {
 
-    private static final String TAG = "AlfrescoTaskChecker";
+    /**
+     * Tag.
+     */
+    private static final String TAG = AlfrescoTaskChecker.class.getSimpleName();
 
     public AlfrescoTaskChecker(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);
@@ -24,6 +28,9 @@ public class AlfrescoTaskChecker extends Worker {
         NotificationUtils.makeStatusNotification(NotificationConstants.NOTIFICATION_NEW_TASK_MESSAGE,
                 applicationContext);
 
-        return Result.success();
+        Data outputData = new Data.Builder()
+                .putString(NotificationConstants.BIKE_FIXU_TASK_NAME_KEY, "Bike Fixu Task Name tralalalal")
+                .build();
+        return Result.success(outputData);
     }
 }
