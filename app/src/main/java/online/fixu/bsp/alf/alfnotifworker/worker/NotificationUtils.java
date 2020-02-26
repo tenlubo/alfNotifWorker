@@ -28,6 +28,7 @@ import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 
 import online.fixu.bsp.alf.alfnotifworker.R;
 import online.fixu.bsp.alf.alfnotifworker.WorkFlowActivity;
@@ -54,8 +55,8 @@ final class NotificationUtils {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library
-            CharSequence name = NotificationConstants.VERBOSE_NOTIFICATION_CHANNEL_NAME;
-            String description = NotificationConstants.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION;
+            CharSequence name = NotificationConstants.NOTIFICATION_CHANNEL_NAME;
+            String description = NotificationConstants.NOTIFICATION_CHANNEL_DESCRIPTION;
             int importance = NotificationManager.IMPORTANCE_HIGH;
             NotificationChannel channel =
                     new NotificationChannel(NotificationConstants.CHANNEL_ID, name, importance);
@@ -87,6 +88,7 @@ final class NotificationUtils {
                         R.drawable.ic_alarm_white_48dp))
                 .setContentTitle(NotificationConstants.NOTIFICATION_TITLE)
                 .setContentText(message)
+                .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
                 .setCategory(Notification.CATEGORY_ALARM)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -110,7 +112,7 @@ final class NotificationUtils {
                 // Summary line after the detail section in the big form of the template.
                 // Note: To improve readability, don't overload the user with info. If Summary Text
                 // doesn't add critical information, you should skip it.
-                .setSummaryText("Asi vela bike fixu");
+                .setSummaryText("Bike Fixu Alfresco");
     }
 
     private static PendingIntent getNotificationPendingIntent(Context context) {
@@ -150,19 +152,6 @@ final class NotificationUtils {
                         snoozePendingIntent)
                         .build();
     }
-
-    /**
-     * Method for sleeping for a fixed about of time to emulate slower work
-     */
-//    static void sleep() {
-//        try {
-//            Thread.sleep(Constants.DELAY_TIME_MILLIS, 0);
-//        } catch (InterruptedException e) {
-//            Log.d(TAG, e.getMessage());
-//        }
-//    }
-
-
 
     private NotificationUtils() {
     }

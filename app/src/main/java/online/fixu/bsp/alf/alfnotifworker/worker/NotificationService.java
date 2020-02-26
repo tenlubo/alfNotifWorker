@@ -15,7 +15,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class NotificationService extends IntentService {
 
-
+    /**
+     * Tag.
+     */
     private static final String TAG = NotificationService.class.getSimpleName();
 
     public static final String ACTION_SNOOZE =
@@ -36,7 +38,7 @@ public class NotificationService extends IntentService {
         if (intent != null) {
             final String action = intent.getAction();
             if (ACTION_DISMISS.equals(action)) {
-                handleActionDismiss();
+                cancelNotification();
             } else if (ACTION_SNOOZE.equals(action)) {
                 handleActionSnooze();
             }
@@ -44,31 +46,28 @@ public class NotificationService extends IntentService {
     }
 
     /**
-     * Handles action Dismiss in the provided background thread.
-     */
-    private void handleActionDismiss() {
-        Log.d(TAG, "handleActionDismiss()");
-        NotificationManagerCompat notificationManagerCompat =
-                NotificationManagerCompat.from(getApplicationContext());
-        notificationManagerCompat.cancel(NotificationConstants.NOTIFICATION_ID);
-    }
-
-    /**
      * Handles action Snooze in the provided background thread.
      */
     private void handleActionSnooze() {
         Log.d(TAG, "handleActionSnooze()");
-        NotificationManagerCompat notificationManagerCompat =
-                NotificationManagerCompat.from(getApplicationContext());
-        notificationManagerCompat.cancel(NotificationConstants.NOTIFICATION_ID);
+        cancelNotification();
         try {
             Thread.sleep(SNOOZE_TIME);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-
         Context applicationContext = getApplicationContext();
         NotificationUtils.makeStatusNotification(NotificationConstants.NOTIFICATION_NEW_TASK_MESSAGE,
                 applicationContext);
+    }
+
+    /**
+     * Cancel Notification.
+     */
+    private void cancelNotification() {
+        Log.d(TAG, "cancelNotification()");
+        NotificationManagerCompat notificationManagerCompat =
+                NotificationManagerCompat.from(getApplicationContext());
+        notificationManagerCompat.cancel(NotificationConstants.NOTIFICATION_ID);
     }
 }
