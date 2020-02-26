@@ -10,7 +10,6 @@ import androidx.work.WorkerParameters;
 
 import org.alfresco.mobile.android.api.constants.WorkflowModel;
 import org.alfresco.mobile.android.api.exceptions.AlfrescoSessionException;
-import org.alfresco.mobile.android.api.model.Document;
 import org.alfresco.mobile.android.api.model.Person;
 import org.alfresco.mobile.android.api.model.Process;
 import org.alfresco.mobile.android.api.model.ProcessDefinition;
@@ -102,15 +101,6 @@ public class AlfrescoTaskChecker extends Worker {
                 List<Person> users = new ArrayList<Person>();
                 users.add(user);
 
-                // Items - Attachments
-                String sampleDocumentName = "android.pdf";
-                Document doc = (Document) session.getServiceRegistry()
-                        .getDocumentFolderService()
-                        .getChildByPath(sampleDocumentName);
-                Log.d(TAG, "sample document id: " + doc.getIdentifier());
-                List<Document> docs = new ArrayList<Document>();
-                docs.add(doc);
-
                 // Due date
                 GregorianCalendar calendar = new GregorianCalendar();
                 calendar.set(Calendar.YEAR, 2013);
@@ -131,7 +121,7 @@ public class AlfrescoTaskChecker extends Worker {
 
                 // START THE PROCESS
                 Process adhocProcess = workflowService.startProcess(adhoc,
-                        users, variables, docs);
+                        users, variables, new ArrayList<>());
 
                 Log.d(TAG, "process identifier for newly started process: " + adhocProcess.getIdentifier());
 
