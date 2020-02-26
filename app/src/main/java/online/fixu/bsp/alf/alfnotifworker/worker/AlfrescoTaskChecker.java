@@ -119,6 +119,8 @@ public class AlfrescoTaskChecker extends Worker {
                 variables.put(WorkflowModel.PROP_SEND_EMAIL_NOTIFICATIONS,
                         "true");
 
+                variables.put(WorkflowModel.PROP_REVIEW_OUTCOME, WorkflowModel.TRANSITION_REJECT);
+
                 // START THE PROCESS
                 Process adhocProcess = workflowService.startProcess(adhoc,
                         users, variables, new ArrayList<>());
