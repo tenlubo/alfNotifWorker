@@ -8,23 +8,13 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import org.alfresco.mobile.android.api.constants.WorkflowModel;
 import org.alfresco.mobile.android.api.exceptions.AlfrescoSessionException;
-import org.alfresco.mobile.android.api.model.Person;
 import org.alfresco.mobile.android.api.model.Process;
-import org.alfresco.mobile.android.api.model.ProcessDefinition;
 import org.alfresco.mobile.android.api.model.Task;
 import org.alfresco.mobile.android.api.services.WorkflowService;
 import org.alfresco.mobile.android.api.session.RepositorySession;
-import org.alfresco.mobile.android.api.utils.DateUtils;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class AlfrescoTaskChecker extends Worker {
 
@@ -74,6 +64,7 @@ public class AlfrescoTaskChecker extends Worker {
         String url = params[0];
         String username = params[1];
         String password = params[2];
+        String bikeFixuTaskList = "Bike Fixu Tasks:  ";
 
         try {
             // connect to on-premise repo
@@ -85,79 +76,30 @@ public class AlfrescoTaskChecker extends Worker {
                 // Get WorkflowService
                 workflowService = session.getServiceRegistry().getWorkflowService();
 
-                // start an adhoc workflow
-
-                Map<String, Serializable> variables = new HashMap<>();
-
-                // Process Definition
-                String processDefinitionIdentifier = "activitiAdhoc:1:4";
-                ProcessDefinition adhoc = workflowService
-                        .getProcessDefinition(processDefinitionIdentifier);
-
-                // Assignee
-                Person user = session.getServiceRegistry()
-                        .getPersonService()
-                        .getPerson(session.getPersonIdentifier());
-                List<Person> users = new ArrayList<Person>();
-                users.add(user);
-
-                // Due date
-                GregorianCalendar calendar = new GregorianCalendar();
-                calendar.set(Calendar.YEAR, 2013);
-                variables.put(WorkflowModel.PROP_WORKFLOW_DUE_DATE,
-                        DateUtils.format(calendar));
-
-                // Priority
-                variables.put(WorkflowModel.PROP_WORKFLOW_PRIORITY,
-                        WorkflowModel.PRIORITY_HIGH);
-
-                // Description
-                variables.put(WorkflowModel.PROP_WORKFLOW_DESCRIPTION,
-                        DESCRIPTION);
-
-                // Notification
-                variables.put(WorkflowModel.PROP_SEND_EMAIL_NOTIFICATIONS,
-                        "true");
-
-                variables.put(WorkflowModel.PROP_REVIEW_OUTCOME, WorkflowModel.TRANSITION_REJECT);
-
-                // START THE PROCESS
-                Process adhocProcess = workflowService.startProcess(adhoc,
-                        users, variables, new ArrayList<>());
-
-                Log.d(TAG, "process identifier for newly started process: " + adhocProcess.getIdentifier());
-
                 // show a list of all processes
                 List<Process> processes = workflowService.getProcesses();
 
                 for (Process process : processes) {
                     Log.d(TAG, "process identifier: " + process.getIdentifier());
+                    bikeFixuTaskList += ":proc-id:" + process.getIdentifier();
+                    bikeFixuTaskList += ":proc-desc:" + process.getDescription();
                 }
 
-                // set up closing comment
-                String comment = "Completing task ";
-                Map<String, Serializable> vars = new HashMap<>();
-
                 // find task(s) to complete
-                List<Task> tasks = workflowService.getTasks(adhocProcess);
+                List<Task> tasks = workflowService.getTasks();
 
                 // for each task
                 for (Task task : tasks) {
-
                     // set up comment and/or other variables as required
-                    comment = comment + task.getIdentifier();
-                    vars.put(WorkflowModel.PROP_COMMENT, comment);
-
-                    Log.d(TAG, comment);
-                    // Close Active Task
-                    workflowService.completeTask(task, vars);
-
+                    bikeFixuTaskList += ":task-id:" + task.getIdentifier();
+                    bikeFixuTaskList += ":task-desc:" + task.getDescription();
+                    bikeFixuTaskList += ":task-desc:" + task.getAssigneeIdentifier();
+                    Log.d(TAG, bikeFixuTaskList);
                 }
 
             } else {
-
                 Log.d(TAG, "No Session available!");
-
+                return "Failed to connect: No Session available!";
             }
 
         } catch (AlfrescoSessionException e) {
@@ -166,7 +108,7 @@ public class AlfrescoTaskChecker extends Worker {
         }
 
         Log.d(TAG, "doInBackground Complete");
-        return "doInBackground Complete";
+        return bikeFixuTaskList+"\n\n";
     }
 
 }
