@@ -16,4 +16,5 @@ public interface NotificationConstants {
     String TAG_ALFRESCO_OUTPUT = "BIKE_FIXU_ALFRESCO_OUTPUT";
 
     String BIKE_FIXU_TASK_NAME_KEY = "BIKE_FIXU_TASK_NAME_KEY";
+    String TAG_ALFRESCO_WORK_NAME = "TAG_ALFRESCO_WORK_NAME" ;
 }

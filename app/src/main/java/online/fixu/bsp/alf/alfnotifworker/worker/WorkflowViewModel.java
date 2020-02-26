@@ -6,8 +6,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.ExistingWorkPolicy;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkContinuation;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
@@ -40,8 +42,8 @@ public class WorkflowViewModel extends AndroidViewModel {
         PeriodicWorkRequest alfWork = alfWorkBuilder
                 .addTag(NotificationConstants.TAG_ALFRESCO_OUTPUT)
                 .build();
-        mWorkManager.enqueueUniquePeriodicWork("alfTaskTag",
-                ExistingPeriodicWorkPolicy.KEEP, alfWork);
+        mWorkManager.enqueueUniquePeriodicWork(NotificationConstants.TAG_ALFRESCO_WORK_NAME,
+                ExistingPeriodicWorkPolicy.REPLACE, alfWork);
     }
 
     public void oneTimeAlfrescoTaskCheck() {
@@ -50,14 +52,20 @@ public class WorkflowViewModel extends AndroidViewModel {
         OneTimeWorkRequest alfWork = alfBuilder
                 .addTag(NotificationConstants.TAG_ALFRESCO_OUTPUT)
                 .build();
-        mWorkManager.enqueue(alfWork);
+
+        WorkContinuation continuation = mWorkManager
+                .beginUniqueWork(NotificationConstants.TAG_ALFRESCO_WORK_NAME,
+                        ExistingWorkPolicy.REPLACE,
+                        alfWork);
+
+        continuation.enqueue();
     }
 
     /**
      * Cancel work using the work's unique name
      */
     public void cancelWork() {
-        mWorkManager.cancelAllWork();
+        mWorkManager.cancelUniqueWork(NotificationConstants.TAG_ALFRESCO_WORK_NAME);;
     }
 
     public LiveData<List<WorkInfo>> getSavedAlfrescoInfo() {

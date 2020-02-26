@@ -1,12 +1,12 @@
 <resources>
-    <string name="app_name">AlfNotifWorker</string>
+    <string name="app_name">Bike Fixu Tasker</string>
     <string name="workerButton">Workflows</string>
     <string name="description_workflow">Workflow Task Description</string>
     <string name="workflow_title">Workflow Task Options</string>
     <string name="workflow_ignore">Decide Later</string>
     <string name="workflow_accept">Accept</string>
     <string name="workflow_reject">Reject</string>
-    <string name="next_workflow">Next Workflow</string>
     <string name="go">Submit</string>
     <string name="reload">Refresh</string>
+    <string name="cancel_workflow">Cancel</string>
 </resources>
