@@ -24,6 +24,14 @@ public class AlfrescoTaskChecker extends Worker {
     public Result doWork() {
 
         Log.d(TAG, "doWork()");
+
+        try {
+            Thread.sleep(5000, 0);
+        } catch (InterruptedException e) {
+            Log.d(TAG, e.getMessage());
+        }
+        Log.d(TAG, "Work response");
+
         Context applicationContext = getApplicationContext();
         NotificationUtils.makeStatusNotification(NotificationConstants.NOTIFICATION_NEW_TASK_MESSAGE,
                 applicationContext);

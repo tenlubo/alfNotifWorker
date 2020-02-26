@@ -47,17 +47,19 @@ public class WorkFlowActivity extends AppCompatActivity {
         mViewModel = new ViewModelProvider(this).get(WorkflowViewModel.class);
 
         mProgressBar = findViewById(R.id.progress_bar);
+
         mCancelButton = findViewById(R.id.cancel_button);
+        mCancelButton.setOnClickListener(view -> mViewModel.cancelWork());
 
         mGoButton = findViewById(R.id.go_button);
-        taskView =  findViewById(R.id.bike_fixu_text_view);
-
         // Setup blur image file button
         mGoButton.setOnClickListener(view -> mViewModel.startAlfrescoTaskChecker());
 
         mReloadButton = findViewById(R.id.refresh_button);
         // Setup blur image file button
         mReloadButton.setOnClickListener(view -> mViewModel.oneTimeAlfrescoTaskCheck());
+
+        taskView =  findViewById(R.id.bike_fixu_text_view);
 
         showWorkerData();
     }

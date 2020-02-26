@@ -53,6 +53,13 @@ public class WorkflowViewModel extends AndroidViewModel {
         mWorkManager.enqueue(alfWork);
     }
 
+    /**
+     * Cancel work using the work's unique name
+     */
+    public void cancelWork() {
+        mWorkManager.cancelAllWork();
+    }
+
     public LiveData<List<WorkInfo>> getSavedAlfrescoInfo() {
         return mSavedAlfrescoInfo;
     }
