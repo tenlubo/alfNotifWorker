@@ -98,7 +98,7 @@ public class WorkFlowActivity extends AppCompatActivity {
                 // If there is an output file show "See File" button
                 if (!TextUtils.isEmpty(alfrescoTaskName)) {
                     mViewModel.setAlfrescoTaskName(alfrescoTaskName);
-                    taskView.append(alfrescoTaskName);
+                    taskView.append("\n\n" + alfrescoTaskName);
                 }
             }
         });

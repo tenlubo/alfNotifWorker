@@ -8,6 +8,8 @@ import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
+import online.fixu.bsp.alf.alfnotifworker.spring.LoginController;
+
 public class AlfrescoTaskChecker extends Worker {
 
     /**
@@ -25,19 +27,13 @@ public class AlfrescoTaskChecker extends Worker {
 
         Log.d(TAG, "doWork()");
 
-        try {
-            Thread.sleep(5000, 0);
-        } catch (InterruptedException e) {
-            Log.d(TAG, e.getMessage());
-        }
-        Log.d(TAG, "Work response");
-
         Context applicationContext = getApplicationContext();
         NotificationUtils.makeStatusNotification(NotificationConstants.NOTIFICATION_NEW_TASK_MESSAGE,
                 applicationContext);
 
         Data outputData = new Data.Builder()
-                .putString(NotificationConstants.BIKE_FIXU_TASK_NAME_KEY, "Bike Fixu Task Name tralalalal")
+                .putString(NotificationConstants.BIKE_FIXU_TASK_NAME_KEY,
+                        LoginController.alfrescoLogin().getEntry().getId())
                 .build();
         return Result.success(outputData);
     }
