@@ -33,7 +33,7 @@ public class AlfrescoTaskChecker extends Worker {
 
         Data outputData = new Data.Builder()
                 .putString(NotificationConstants.BIKE_FIXU_TASK_NAME_KEY,
-                        LoginController.alfrescoLogin().getEntry().getId())
+                        LoginController.alfrescoLogin())
                 .build();
         return Result.success(outputData);
     }

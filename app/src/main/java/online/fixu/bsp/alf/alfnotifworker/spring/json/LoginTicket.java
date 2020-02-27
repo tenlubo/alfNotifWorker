@@ -7,12 +7,6 @@ public class LoginTicket {
     public LoginTicket() {
     }
 
-    public LoginTicket(String statusText, String localizedMessage) {
-        entry = new LoginEntry();
-        entry.setId(statusText);
-        entry.setUserId(localizedMessage);
-    }
-
     public LoginEntry getEntry() {
         return entry;
     }
