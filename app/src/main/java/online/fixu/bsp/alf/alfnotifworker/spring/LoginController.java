@@ -7,7 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.converter.json.MappingJacksonHttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.util.support.Base64;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.ResourceAccessException;
@@ -36,14 +36,14 @@ public class LoginController {
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
         requestHeaders.setContentType(MediaType.APPLICATION_JSON);
 
-        LoginCredentials loginCredenc = new LoginCredentials();
-        HttpEntity<LoginCredentials> requestEnt = new HttpEntity<>(loginCredenc, requestHeaders);
+        LoginCredentials loginCredentials = new LoginCredentials();
+        HttpEntity<LoginCredentials> requestEnt = new HttpEntity<>(loginCredentials, requestHeaders);
         requestEnt.getBody().setUserId("admin");
         requestEnt.getBody().setPassword("admin");
 
         // Create a new RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
-        restTemplate.getMessageConverters().add(new MappingJacksonHttpMessageConverter());
+        restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
         try {
             // Make the network request
@@ -57,10 +57,7 @@ public class LoginController {
                     new HttpEntity<>(requestHeadersTask), Object.class);
 
             return responseTask.getStatusCode().toString();
-        } catch (HttpClientErrorException e) {
-            Log.e(TAG, e.getLocalizedMessage(), e);
-            return e.getLocalizedMessage();
-        } catch (ResourceAccessException e) {
+        } catch (HttpClientErrorException | ResourceAccessException e) {
             Log.e(TAG, e.getLocalizedMessage(), e);
             return e.getLocalizedMessage();
         }

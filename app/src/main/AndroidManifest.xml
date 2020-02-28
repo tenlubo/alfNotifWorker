@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
         <service
             android:name=".worker.NotificationService"
-            android:exported="false"></service>
+            android:exported="false" />
 
         <activity android:name=".WorkFlowActivity" />
         <activity android:name=".MainActivity">
