@@ -17,7 +17,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 
 import online.fixu.bsp.alf.alfnotifworker.R;
 
@@ -29,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        loginViewModel = ViewModelProviders.of(this, new LoginViewModelFactory())
+        loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 
         final EditText usernameEditText = findViewById(R.id.username);

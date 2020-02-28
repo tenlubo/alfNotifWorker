@@ -9,8 +9,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.json.GsonHttpMessageConverter;
 import org.springframework.util.support.Base64;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
@@ -28,11 +26,15 @@ public class LoginController {
     private static final String TAG = LoginController.class.getSimpleName();
 
     public static String alfrescoLogin() {
+        return  alfrescoLogin("admin", "admin");
+    }
+
+    public static String alfrescoLogin(String userName, String password) {
         Log.d(TAG, "alfrescoLogin()");
 
         final String url = "http://bike.fixu.online:8080/" + AuthenticationProps.AUTH_REST_PATH;
 
-        final String taskUrl = "http://bike.fixu.online:8080/"+ TaskProps.TASK_REST_PATH;
+        final String taskUrl = "http://bike.fixu.online:8080/" + TaskProps.TASK_REST_PATH;
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
@@ -40,28 +42,24 @@ public class LoginController {
 
         LoginCredentials loginCredentials = new LoginCredentials();
         HttpEntity<LoginCredentials> requestEnt = new HttpEntity<>(loginCredentials, requestHeaders);
-        requestEnt.getBody().setUserId("admin");
-        requestEnt.getBody().setPassword("admin");
+        requestEnt.getBody().setUserId(userName);
+        requestEnt.getBody().setPassword(password);
 
         // Create a new RestTemplate instance
         RestTemplate restTemplate = new RestTemplate();
         restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
 
-        try {
-            // Make the network request
-            Log.d(TAG, url);
-            ResponseEntity<LoginTicket> response = restTemplate.exchange(url, HttpMethod.POST, requestEnt, LoginTicket.class);
-            HttpHeaders requestHeadersTask = new HttpHeaders();
-            requestHeadersTask.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
-            requestHeadersTask.add("Authorization","Basic "+ Base64.encodeBytes(response.getBody().getEntry().getId().getBytes()));
+        // Make the network request
+        Log.d(TAG, url);
+        ResponseEntity<LoginTicket> response = restTemplate.exchange(url, HttpMethod.POST, requestEnt, LoginTicket.class);
+        HttpHeaders requestHeadersTask = new HttpHeaders();
+        requestHeadersTask.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        requestHeadersTask.add("Authorization", "Basic " + Base64.encodeBytes(response.getBody().getEntry().getId().getBytes()));
 
-            ResponseEntity<Object> responseTask = restTemplate.exchange(taskUrl, HttpMethod.GET,
-                    new HttpEntity<>(requestHeadersTask), Object.class);
+        ResponseEntity<Object> responseTask = restTemplate.exchange(taskUrl, HttpMethod.GET,
+                new HttpEntity<>(requestHeadersTask), Object.class);
 
-            return responseTask.getStatusCode().toString();
-        } catch (HttpClientErrorException | ResourceAccessException e) {
-            Log.e(TAG, e.getLocalizedMessage(), e);
-            return e.getLocalizedMessage();
-        }
+        return responseTask.getStatusCode().toString();
+
     }
 }
