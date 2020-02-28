@@ -15,8 +15,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
+import online.fixu.bsp.alf.alfnotifworker.spring.json.authentication.AuthenticationProps;
 import online.fixu.bsp.alf.alfnotifworker.spring.json.authentication.LoginCredentials;
 import online.fixu.bsp.alf.alfnotifworker.spring.json.authentication.LoginTicket;
+import online.fixu.bsp.alf.alfnotifworker.spring.json.workflow.tasks.TaskProps;
 
 public class LoginController {
 
@@ -28,9 +30,9 @@ public class LoginController {
     public static String alfrescoLogin() {
         Log.d(TAG, "alfrescoLogin()");
 
-        final String url = "http://bike.fixu.online:8080/alfresco/api/-default-/public/authentication/versions/1/tickets";
+        final String url = "http://bike.fixu.online:8080/" + AuthenticationProps.AUTH_REST_PATH;
 
-        final String taskUrl = "http://bike.fixu.online:8080/alfresco/api/-default-/public/workflow/versions/1/tasks";
+        final String taskUrl = "http://bike.fixu.online:8080/"+ TaskProps.TASK_REST_PATH;
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
