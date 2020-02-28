@@ -9,6 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.Objects;
 
+import online.fixu.bsp.alf.alfnotifworker.ui.login.LoginActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -23,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onClick()");
         try {
-            Intent k = new Intent(this, WorkFlowActivity.class);
+            Intent k = new Intent(this, LoginActivity.class);
             startActivity(k);
         } catch(Exception e) {
             Log.e(TAG, Objects.requireNonNull(e.getMessage()));
