@@ -1,4 +1,4 @@
-package online.fixu.bsp.alf.alfnotifworker.spring.json;
+package online.fixu.bsp.alf.alfnotifworker.spring.json.authentication;
 
 public class LoginTicket {
 

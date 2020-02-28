@@ -15,8 +15,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collections;
 
-import online.fixu.bsp.alf.alfnotifworker.spring.json.LoginCredentials;
-import online.fixu.bsp.alf.alfnotifworker.spring.json.LoginTicket;
+import online.fixu.bsp.alf.alfnotifworker.spring.json.authentication.LoginCredentials;
+import online.fixu.bsp.alf.alfnotifworker.spring.json.authentication.LoginTicket;
 
 public class LoginController {
 
