@@ -67,7 +67,8 @@ public class WorkFlowActivity extends AppCompatActivity {
     private void showWorkerData() {
 
         // Show work status
-        mViewModel.getSavedAlfrescoInfo().observe(this, listOfWorkInfo -> {
+        mViewModel.
+                getSavedAlfrescoInfo().observe(this, listOfWorkInfo -> {
 
             // Note that these next few lines grab a single WorkInfo if it exists
             // This code could be in a Transformation in the ViewModel; they are included here

@@ -34,6 +34,32 @@ public class LoginController {
 
         final String url = "http://bike.fixu.online:8080/" + AuthenticationProps.AUTH_REST_PATH;
 
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        requestHeaders.setContentType(MediaType.APPLICATION_JSON);
+
+        LoginCredentials loginCredentials = new LoginCredentials();
+        HttpEntity<LoginCredentials> requestEnt = new HttpEntity<>(loginCredentials, requestHeaders);
+        requestEnt.getBody().setUserId(userName);
+        requestEnt.getBody().setPassword(password);
+
+        // Create a new RestTemplate instance
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.getMessageConverters().add(new GsonHttpMessageConverter());
+
+        // Make the network request
+        Log.d(TAG, url);
+        ResponseEntity<LoginTicket> response = restTemplate.exchange(url, HttpMethod.POST, requestEnt, LoginTicket.class);
+
+        return "Basic " + Base64.encodeBytes(response.getBody().getEntry().getId().getBytes());
+
+    }
+
+    public static String alfrescoLoginWithTask(String userName, String password) {
+        Log.d(TAG, "alfrescoLogin()");
+
+        final String url = "http://bike.fixu.online:8080/" + AuthenticationProps.AUTH_REST_PATH;
+
         final String taskUrl = "http://bike.fixu.online:8080/" + TaskProps.TASK_REST_PATH;
 
         HttpHeaders requestHeaders = new HttpHeaders();
