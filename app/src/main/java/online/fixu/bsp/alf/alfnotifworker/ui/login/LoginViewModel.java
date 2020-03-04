@@ -18,12 +18,10 @@ import androidx.work.WorkManager;
 import java.util.List;
 
 import online.fixu.bsp.alf.alfnotifworker.R;
-import online.fixu.bsp.alf.alfnotifworker.worker.NotificationConstants;
 
 public class LoginViewModel extends AndroidViewModel {
 
     private final static String TAG_LOGIN_WORKER = "TAG_LOGIN_WORKER";
-
 
     private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
     private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
@@ -33,31 +31,20 @@ public class LoginViewModel extends AndroidViewModel {
     public LoginViewModel(@NonNull Application application) {
         super(application);
         workManager = WorkManager.getInstance(application);
+        workManager.pruneWork();
         savedAlfrescoLoginInfo = workManager.getWorkInfosByTagLiveData(TAG_LOGIN_WORKER);
     }
 
-    public void setAlfrescoLoginOwner(LifecycleOwner owner) {
+    void setAlfrescoLoginOwner(LifecycleOwner owner) {
         savedAlfrescoLoginInfo.observe(owner, listOfWorkInfo -> {
-
-            // Note that these next few lines grab a single WorkInfo if it exists
-            // This code could be in a Transformation in the ViewModel; they are included here
-            // so that the entire process of displaying a WorkInfo is in one location.
 
             // If there are no matching work info, do nothing
             if (listOfWorkInfo == null || listOfWorkInfo.isEmpty()) {
                 return;
             }
-
-            // We only care about the one output status.
-            // Every continuation has only one worker tagged TAG_OUTPUT
             WorkInfo workInfo = listOfWorkInfo.get(0);
-
             boolean finished = workInfo.getState().isFinished();
-            if (!finished) {
-                //             showWorkInProgress();
-            } else {
-                //             showWorkFinished();
-
+            if (finished) {
                 Data outputData = workInfo.getOutputData();
                 if (outputData.getString(AlfrescoLoginWorker.LOGIN_SUCCESS) != null) {
                     loginResult.setValue(new LoginResult(new LoggedInUserView("Ahojky Lego")));
@@ -66,7 +53,6 @@ public class LoginViewModel extends AndroidViewModel {
                 }
             }
         });
-
     }
 
     LiveData<LoginFormState> getLoginFormState() {
@@ -90,14 +76,14 @@ public class LoginViewModel extends AndroidViewModel {
                 .build();
 
         WorkContinuation continuation = workManager
-                .beginUniqueWork(NotificationConstants.TAG_ALFRESCO_WORK_NAME,
+                .beginUniqueWork(TAG_LOGIN_WORKER,
                         ExistingWorkPolicy.REPLACE,
                         alfWork);
 
         continuation.enqueue();
     }
 
-    public void loginDataChanged(String username, String password) {
+    void loginDataChanged(String username, String password) {
         if (!isUserNameValid(username)) {
             loginFormState.setValue(new LoginFormState(R.string.invalid_username, null));
         } else if (!isPasswordValid(password)) {
